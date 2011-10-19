@@ -1,0 +1,21 @@
+{
+  "author": "Felix Geisendörfer <felix@debuggable.com> (http://debuggable.com/)",
+  "name": "redis-pool",
+  "description": "A simple node.js redis pool.",
+  "version": "0.0.0",
+  "homepage": "https://github.com/felixge/node-redis-pool",
+  "repository": {
+    "url": ""
+  },
+  "main": "./index",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "dependencies": {
+    "redis": "~0.6.7"
+  },
+  "devDependencies": {}
+}
