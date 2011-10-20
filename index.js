@@ -134,7 +134,7 @@ RedisPool.prototype.inspect = function() {
   var pool = [];
   for (var key in this._pool) {
     var ref = this._pool[key];
-    pool.push({key: key, count: ref.count});
+    pool.push({key: key, dsn: this.stringify(ref.client), count: ref.count});
   }
 
   return '<' + this.constructor.name + ' ' + util.inspect({
