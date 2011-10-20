@@ -46,9 +46,11 @@ RedisPool.prototype.alloc = function(dsn, options) {
   var parsed = this.parse(dsn);
   this.emit('log', 'Alloc: ' + dsn + ' (' + JSON.stringify(options) + ')');
 
-  return (options && options.exclusive)
+  options = options || {};
+
+  return (options.exclusive)
     ? this._allocExclusive(parsed)
-    : this._allocInPool(parsed);
+    : this._allocInPool(parsed, options);
 };
 
 RedisPool.prototype._createClient = function(parsedDsn) {
@@ -63,8 +65,11 @@ RedisPool.prototype._allocExclusive = function(parsedDsn) {
   return client;
 };
 
-RedisPool.prototype._allocInPool = function(parsedDsn) {
-  var key = [parsedDsn.host, parsedDsn.port].join(':');
+RedisPool.prototype._allocInPool = function(parsedDsn, options) {
+  var key = [parsedDsn.host, parsedDsn.port];
+  if (options.subscriber) key.push('subscriber');
+
+  key = key.join(':');
   var ref = this._pool[key];
 
   if (ref) {

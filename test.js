@@ -83,6 +83,24 @@ net.createConnection = function() {
 
     assert.notStrictEqual(a, b);
   })();
+
+  (function testSubscriber() {
+    var pool = new RedisPool();
+    assert.equal(pool.length, 0);
+
+    var a = pool.alloc('redis://localhost/', {subscriber: true});
+    assert.equal(pool.length, 1);
+
+    var b = pool.alloc('redis://localhost/', {subscriber: true});
+    assert.equal(pool.length, 1);
+
+    assert.strictEqual(a, b);
+
+    var c = pool.alloc('redis://localhost/');
+    assert.equal(pool.length, 2);
+
+    assert.notStrictEqual(a, c);
+  })();
 })();
 
 (function testFree() {
