@@ -2,7 +2,7 @@
   "author": "Felix Geisendörfer <felix@debuggable.com> (http://debuggable.com/)",
   "name": "redis-pool",
   "description": "A simple node.js redis pool.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "homepage": "https://github.com/felixge/node-redis-pool",
   "repository": {
     "url": ""
