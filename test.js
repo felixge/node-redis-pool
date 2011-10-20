@@ -1,5 +1,5 @@
-var RedisPool = require('./index').RedisPool;
-var singleton = require('./index');
+var RedisPool = require('./index');
+var singleton = RedisPool.singleton;
 var assert    = require('assert');
 var noop      = function() {};
 var net       = require('net');

@@ -3,8 +3,7 @@ var url          = require('url');
 var EventEmitter = require('events').EventEmitter;
 var util         = require('util');
 
-
-module.exports = RedisPool();
+module.exports = RedisPool;
 util.inherits(RedisPool, EventEmitter);
 function RedisPool() {
   EventEmitter.call(this);
