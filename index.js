@@ -87,8 +87,10 @@ RedisPool.prototype.free = function(client, cb) {
   if (this._freePoolClient(client)) return;
   if (this._freeExclusiveClient(client)) return;
 
-  var err = new Error('RedisPool.FreeError: Cannot free unknown client.');
-  err.client = client;
+  var err = new Error(
+    'RedisPool.FreeError: Cannot free unknown client: ' +
+    this.stringify(client)
+  );
   throw err;
 };
 
