@@ -40,7 +40,7 @@ RedisPool.prototype.stringify = function(parsed) {
     slashes  : true,
     hostname : parsed.host,
     port     : parsed.port,
-    pathname : '/' + parsed.namespace,
+    pathname : '/' + (parsed.namespace || ''),
   });
 };
 
@@ -83,7 +83,7 @@ RedisPool.prototype._allocInPool = function(parsedDsn) {
   return ref.client;
 };
 
-RedisPool.prototype.free = function(client) {
+RedisPool.prototype.free = function(client, cb) {
   if (this._freePoolClient(client)) return;
   if (this._freeExclusiveClient(client)) return;
 
@@ -122,4 +122,19 @@ RedisPool.prototype._freeExclusiveClient = function(client) {
   this.length--;
 
   return true;
+};
+
+RedisPool.prototype.inspect = function() {
+  var exclusive = this._exclusive.map(this.stringify.bind(this));
+  var pool = [];
+  for (var key in this._pool) {
+    var ref = this._pool[key];
+    pool.push({dsn: this.stringify(ref.client), count: ref.count});
+  }
+
+  return '<' + this.constructor.name + ' ' + util.inspect({
+    length    : this.length,
+    pool      : pool,
+    exclusive : exclusive,
+  }) + '>';
 };
