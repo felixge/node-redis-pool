@@ -3,11 +3,9 @@ var url          = require('url');
 var EventEmitter = require('events').EventEmitter;
 var util         = require('util');
 
+
+module.exports = RedisPool();
 util.inherits(RedisPool, EventEmitter);
-
-module.exports = new RedisPool();
-module.exports.RedisPool = RedisPool;
-
 function RedisPool() {
   EventEmitter.call(this);
 
@@ -18,6 +16,7 @@ function RedisPool() {
   this._defaultHost = 'localhost';
   this._defaultPort = 6379;
 }
+RedisPool.singleton = new RedisPool();
 
 RedisPool.prototype.parse = function(dsn) {
   var parsed = url.parse(dsn);
