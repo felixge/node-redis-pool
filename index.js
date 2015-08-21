@@ -49,16 +49,17 @@ RedisPool.prototype.alloc = function(dsn, options) {
   options = options || {};
 
   return (options.exclusive)
-    ? this._allocExclusive(parsed)
+    ? this._allocExclusive(parsed, options)
     : this._allocInPool(parsed, options);
 };
 
-RedisPool.prototype._createClient = function(parsedDsn) {
-  return redis.createClient(parsedDsn.port, parsedDsn.host);
+RedisPool.prototype._createClient = function(parsedDsn, redisOptions) {
+  redisOptions = redisOptions || {};
+  return redis.createClient(parsedDsn.port, parsedDsn.host, redisOptions);
 };
 
-RedisPool.prototype._allocExclusive = function(parsedDsn) {
-  var client = this._createClient(parsedDsn)
+RedisPool.prototype._allocExclusive = function(parsedDsn, options) {
+  var client = this._createClient(parsedDsn, options.redisOptions)
   this._exclusive.push(client);
   this.length++;
 
@@ -80,7 +81,7 @@ RedisPool.prototype._allocInPool = function(parsedDsn, options) {
   this.length++;
   this._pool[key] = ref = {
     count  : 1,
-    client : this._createClient(parsedDsn),
+    client : this._createClient(parsedDsn, options.redisOptions),
   };
 
   return ref.client;
